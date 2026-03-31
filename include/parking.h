@@ -10,77 +10,85 @@ enum Color
 
 class ParkedCar
 {
-  std::string make, model;
-  Color color;
-  unsigned license_num;
-  unsigned minutes_parked;
+  std::string make_m, model_m;
+  Color color_m;
+  unsigned license_num_m;
+  unsigned minutes_parked_m;
 public:
   ParkedCar(
       std::string make, std::string model, Color color, 
       unsigned license_num, unsigned minutes_parked);
 
   inline std::string getMake() const 
-  { return make; }
+  { return make_m; }
 
   inline std::string getModel() const
-  { return model; }
+  { return model_m; }
 
   inline Color getColor() const
-  { return color; }
+  { return color_m; }
 
   inline unsigned getLicenseNum() const
-  { return license_num; }
+  { return license_num_m; }
 
   inline unsigned getMinutedParked() const
-  { return minutes_parked; }
+  { return minutes_parked_m; }
 
   inline void setMinutesParked(unsigned minutes)
-  { minutes_parked = minutes; }
+  { minutes_parked_m = minutes; }
 
   ParkedCar& operator++();
-  ParkedCar& operator++(int);
+
+  ParkedCar operator++(int);
 };
 
 class ParkingMeter
 {
-  unsigned minutes_purchased;
+  unsigned minutes_purchased_m;
 public:
-  explicit ParkingMeter(unsigned mins = 30);
+  explicit inline ParkingMeter(unsigned mins = 30):
+    minutes_purchased_m(mins) 
+  {};
 
   inline unsigned getMinutesPurchased(void) 
-  { return minutes_purchased; }
+  { return minutes_purchased_m; }
 
   inline void setMinutesPurchased(unsigned mins) 
-  { minutes_purchased = mins; }
+  { minutes_purchased_m = mins; }
 };
 
 class PoliceOfficer 
 {
-  std::string name;
-  unsigned badge_num;
+  std::string name_m;
+  unsigned badge_num_m;
 public:
-  PoliceOfficer(std::string name, unsigned badge_num);
+  inline PoliceOfficer(std::string name, unsigned badge_num):
+    name_m(name), badge_num_m(badge_num)
+  {};
 
   inline unsigned getBadgeNum() const
-  { return badge_num; }
+  { return badge_num_m; }
 
   std::string getName() const 
-  { return name; }
+  { return name_m; }
 
   /// returns an optional containing a ParkingTicket if the car needs to be 
   /// ticketed, otherwise an empty optional is returned.
-  std::optional<ParkingTicket> inspectParking();
+  std::optional<ParkingTicket> inspectParking(
+      ParkedCar &car, ParkingMeter &meter);
 private:
   /// returns true if a Car is violating the parking laws.
-  bool isViolating() const;
+  static bool isViolating(ParkedCar &car, ParkingMeter &meter);
 };
 
 class ParkingTicket 
 {
-  ParkedCar ticketed;
-  ParkingMeter meter;
-  PoliceOfficer popo;
+  ParkedCar ticketed_m;
+  ParkingMeter meter_m;
+  PoliceOfficer popo_m;
 public:
+  ParkingTicket(ParkedCar &ticketed, ParkingMeter &meter, PoliceOfficer &popo); 
+
   /// Generates a report which contains the following formatted data
   /// Make: 
   /// Model:
