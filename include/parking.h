@@ -31,7 +31,7 @@ public:
   inline unsigned getLicenseNum() const
   { return license_num_m; }
 
-  inline unsigned getMinutedParked() const
+  inline unsigned getMinutesParked() const
   { return minutes_parked_m; }
 
   inline void setMinutesParked(unsigned minutes)
@@ -46,9 +46,7 @@ class ParkingMeter
 {
   unsigned minutes_purchased_m;
 public:
-  explicit inline ParkingMeter(unsigned mins = 30):
-    minutes_purchased_m(mins) 
-  {};
+  explicit inline ParkingMeter(unsigned mins = 30);
 
   inline unsigned getMinutesPurchased(void) 
   { return minutes_purchased_m; }
@@ -62,9 +60,7 @@ class PoliceOfficer
   std::string name_m;
   unsigned badge_num_m;
 public:
-  inline PoliceOfficer(std::string name, unsigned badge_num):
-    name_m(name), badge_num_m(badge_num)
-  {};
+  inline PoliceOfficer(std::string name, unsigned badge_num);
 
   inline unsigned getBadgeNum() const
   { return badge_num_m; }
@@ -78,7 +74,7 @@ public:
       ParkedCar &car, ParkingMeter &meter);
 private:
   /// returns true if a Car is violating the parking laws.
-  static bool isViolating(ParkedCar &car, ParkingMeter &meter);
+  static bool isViolating(const ParkedCar &car, const ParkingMeter &meter);
 };
 
 class ParkingTicket 
@@ -106,5 +102,5 @@ public:
   friend std::ostream& operator<<(
       std::ostream &ostream, ParkingTicket const &ticket);
 private:
-  unsigned getFine() const;
+  static unsigned getFine(unsigned mins_parked, unsigned mins_purchased);
 };
