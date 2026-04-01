@@ -1,5 +1,6 @@
 #include "parking.h"
 #include <iostream>
+#include <cassert>
 
 using namespace std;
 
@@ -38,5 +39,13 @@ int main(void) {
 
 void objCreationTest(void)
 {
-  
+  string make { "Honda" }, model { "Odyssey" }, license_plate { "SPDRACER" };
+  // directions say license number so I didn't use a string
+  unsigned minutes_parked { 45 };
+  ParkedCar car { make, model, RED, license_plate, minutes_parked };  
+
+  ParkingMeter meter { 60 };
+  PoliceOfficer popo { "Jordaenius Charmichael III", 42111 };
+
+
 }

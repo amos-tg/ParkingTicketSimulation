@@ -10,14 +10,16 @@ enum Color
 
 class ParkedCar
 {
-  std::string make_m, model_m;
+  std::string make_m, model_m, license_num_m;
   Color color_m;
-  unsigned license_num_m;
   unsigned mins_parked_m;
 public:
+  /// Longest license plate in USA is 8
+  constexpr static std::string INVALID_PLATE { "INVALID_PLATE" };
+
   ParkedCar(
       std::string make, std::string model, Color color, 
-      unsigned license_num, unsigned minutes_parked);
+      std::string license_num, unsigned minutes_parked);
 
   inline std::string getMake() const 
   { return make_m; }
@@ -25,11 +27,11 @@ public:
   inline std::string getModel() const
   { return model_m; }
 
+  inline std::string getLicenseNum() const
+  { return license_num_m; }
+
   inline Color getColor() const
   { return color_m; }
-
-  inline unsigned getLicenseNum() const
-  { return license_num_m; }
 
   inline unsigned getMinutesParked() const
   { return mins_parked_m; }

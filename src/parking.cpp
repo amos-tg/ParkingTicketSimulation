@@ -7,9 +7,15 @@ using namespace std;
 
 ParkedCar::ParkedCar(
   string make, string model, Color color, 
-  unsigned license_num, unsigned minutes_parked):
+  string license_num, unsigned minutes_parked):
     make_m(make), model_m(model), color_m(color),
-    license_num_m(license_num), mins_parked_m(minutes_parked) {}
+    mins_parked_m(minutes_parked) 
+{
+  // max size of a license plate on a car in USA in characters is 8
+  const size_t max_len { 8 };
+  if (license_num.size() > max_len || license_num.size() < 1)
+    license_num_m = INVALID_PLATE; 
+}
 
 ParkedCar& ParkedCar::operator++() 
 {
