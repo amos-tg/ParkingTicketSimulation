@@ -102,5 +102,9 @@ public:
   friend std::ostream& operator<<(
       std::ostream &ostream, const ParkingTicket &ticket);
 
-  unsigned getFine() const;
+  /// getting a negative number is an indicator of user error
+  int getFine() const;
+
+  /// getting a negative number is an indicator of user error
+  static int getFine(unsigned mins_parked, unsigned mins_bought);
 };

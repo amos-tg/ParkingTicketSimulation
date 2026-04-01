@@ -78,7 +78,7 @@ ParkingTicket::ParkingTicket(
   ParkedCar &ticketed, ParkingMeter &meter, PoliceOfficer &popo):
     ticketed_m(ticketed), meter_m(meter), popo_m(popo) {}
 
-unsigned ParkingTicket::getFine() const
+int ParkingTicket::getFine() const
 {
   // only gets called if minutes_parked > minutes_purchased
   unsigned fine {};
@@ -90,6 +90,26 @@ unsigned ParkingTicket::getFine() const
 
   // add 25 for the number of whole hours.
   fine += mins_violated / 60 * 25;
+
+  return fine;
+}
+
+int ParkingTicket::getFine(unsigned mins_parked, unsigned mins_bought)
+{
+  unsigned fine {};
+  unsigned mins_violated { mins_parked - mins_bought };
+  
+  // handle legal parkers appropriately, shouldn't be needed. 
+  if (mins_violated <= 0) return 0;
+
+  // add 25$ for any violation
+  if (mins_violated) fine += 25; 
+
+  // add 10$ for a partial hour
+  if (mins_violated % 60) fine += 10;
+
+  // add 10$ for the number of whole hours.
+  fine += mins_violated / 60 * 10;
 
   return fine;
 }
