@@ -3,6 +3,7 @@
 #include <sstream>
 #include <iostream>
 #include <optional>
+
 using namespace std;
 
 ParkedCar::ParkedCar(
@@ -24,6 +25,7 @@ ParkedCar::ParkedCar(
 
 string ParkedCar::getColor() const
 {
+  // converts enum value to string name
   switch (color_m)
   {
   case RED:
@@ -49,25 +51,13 @@ string ParkedCar::getColor() const
   }
 }
 
-ParkedCar& ParkedCar::operator++() 
-{
-  ++mins_parked_m;
-  return *this;
-}
-
-ParkedCar ParkedCar::operator++(int)
-{
-  ParkedCar copy { *this };
-  ++mins_parked_m;
-  return copy;
-}
-
 optional<ParkingTicket> PoliceOfficer::inspectParking(
     ParkedCar &car, ParkingMeter &meter)
 {
-  // default-initialize an empty object
+  // default-initialize an empty option
   optional<ParkingTicket> option;
 
+  // add the ticket to the option if the car is violating parking rules 
   if (car.getMinutesParked() > meter.getMinutesPurchased())
     option = ParkingTicket { car, meter, *this };
 
@@ -75,23 +65,13 @@ optional<ParkingTicket> PoliceOfficer::inspectParking(
 }
 
 ParkingTicket::ParkingTicket(
-  ParkedCar &ticketed, ParkingMeter &meter, PoliceOfficer &popo):
-    ticketed_m(ticketed), meter_m(meter), popo_m(popo) {}
+  ParkedCar &ticketed, ParkingMeter &meter, PoliceOfficer &police):
+    ticketed_m(ticketed), meter_m(meter), police_m(police) {}
 
 int ParkingTicket::getFine() const
 {
-  // only gets called if minutes_parked > minutes_purchased
-  unsigned fine {};
-  unsigned mins_violated 
-  { ticketed_m.getMinutesParked() - meter_m.getMinutesPurchased() };
-
-  // add ten for any partial hours not handled by the rounded division
-  if (mins_violated % 60) fine += 10; 
-
-  // add 25 for the number of whole hours.
-  fine += mins_violated / 60 * 25;
-
-  return fine;
+  // call the static member overload with the currently stored members
+  return getFine(ticketed_m.getMinutesParked(), meter_m.getMinutesPurchased());
 }
 
 int ParkingTicket::getFine(unsigned mins_parked, unsigned mins_bought)
@@ -108,8 +88,8 @@ int ParkingTicket::getFine(unsigned mins_parked, unsigned mins_bought)
   // add 10$ for a partial hour
   if (mins_violated % 60) fine += 10;
 
-  // add 10$ for the number of whole hours.
-  fine += mins_violated / 60 * 10;
+  // add 10$ for the number of additional whole hours.
+  fine += (mins_violated / 60 - 1) * 10;
 
   return fine;
 }
@@ -126,8 +106,8 @@ string ParkingTicket::report() const
     << "Minutes Parked: " << ticketed_m.getMinutesParked() << '\n'
     << "Minutes Purchased: " << meter_m.getMinutesPurchased() << '\n'
     << "Fine: " << this->getFine() << '$' << '\n'
-    << "Officer Name: " << popo_m.getName() << '\n'
-    << "Officer Badge Num: " << popo_m.getBadgeNum();
+    << "Officer Name: " << police_m.getName() << '\n'
+    << "Officer Badge Num: " << police_m.getBadgeNum();
 
   // convert to string and return
   return report.str();
