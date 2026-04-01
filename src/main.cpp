@@ -135,6 +135,7 @@ void multipleCarsTest(void)
 
 void fineCalculationTest(void)
 {
+  cout << FINE_TEST;
   // non-static member getFine calls static member getFine overload internally
   
   // test the 25$ partial hour fine
@@ -158,4 +159,6 @@ void fineCalculationTest(void)
   min_parked = 360; 
   min_bought = 120;
   assert(ParkingTicket::getFine(min_parked, min_bought) == 55);
+
+  cout << PASS;
 }
