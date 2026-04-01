@@ -5,7 +5,8 @@ class ParkingTicket;
 
 enum Color 
 {
-  RED, ORANGE, YELLOW, GREEN, BLUE, PURPLE, BLACK, WHITE, TAN,
+  RED, ORANGE, YELLOW, GREEN, BLUE,
+  PURPLE, BLACK, WHITE, TAN,
 };
 
 class ParkedCar
@@ -30,8 +31,7 @@ public:
   inline std::string getLicenseNum() const
   { return license_num_m; }
 
-  inline Color getColor() const
-  { return color_m; }
+  std::string getColor() const;
 
   inline unsigned getMinutesParked() const
   { return mins_parked_m; }
@@ -101,6 +101,6 @@ public:
   /// the ParkingTicket::report() function.
   friend std::ostream& operator<<(
       std::ostream &ostream, const ParkingTicket &ticket);
-private:
+
   unsigned getFine() const;
 };

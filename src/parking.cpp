@@ -14,7 +14,39 @@ ParkedCar::ParkedCar(
   // max size of a license plate on a car in USA in characters is 8
   const size_t max_len { 8 };
   if (license_num.size() > max_len || license_num.size() < 1)
+  {
     license_num_m = INVALID_PLATE; 
+    return;
+  }
+
+  license_num_m = license_num;
+}
+
+string ParkedCar::getColor() const
+{
+  switch (color_m)
+  {
+  case RED:
+    return "Red";
+  case ORANGE:
+    return "Orange";
+  case YELLOW:
+    return "Yellow";
+  case GREEN:
+    return "Green";
+  case BLUE:
+    return "Blue";
+  case PURPLE:
+    return "Purple";
+  case BLACK:
+    return "Black";
+  case WHITE:
+    return "White";
+  case TAN:
+    return "Tan";
+  default:
+    return "INVALID";
+  }
 }
 
 ParkedCar& ParkedCar::operator++() 
@@ -73,7 +105,7 @@ string ParkingTicket::report() const
     << "License Number: " << ticketed_m.getLicenseNum() << '\n'
     << "Minutes Parked: " << ticketed_m.getMinutesParked() << '\n'
     << "Minutes Purchased: " << meter_m.getMinutesPurchased() << '\n'
-    << "Fine: " << this->getFine() << '\n'
+    << "Fine: " << this->getFine() << '$' << '\n'
     << "Officer Name: " << popo_m.getName() << '\n'
     << "Officer Badge Num: " << popo_m.getBadgeNum();
 
